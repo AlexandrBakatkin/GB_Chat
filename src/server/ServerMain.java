@@ -1,5 +1,7 @@
 package server;
 
+import com.oracle.tools.packager.Log;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -9,8 +11,11 @@ import java.net.Socket;
 import java.sql.SQLException;
 import java.util.Scanner;
 import java.util.Vector;
+import java.util.logging.Logger;
 
 public class ServerMain {
+    private static final Logger loggerServer = Logger.getLogger(ServerMain.class.getName());
+
     private Vector<ClientHandler> clients;
 
     public ServerMain () throws SQLException {
@@ -21,11 +26,11 @@ public class ServerMain {
         try {
             AuthService.connect();
             server = new ServerSocket(8189);
-            System.out.println("Server start. Wait...");
+            loggerServer.info("Server start. Wait...");
 
             while(true){
                 socket = server.accept();
-                System.out.println("Client connected...");
+                loggerServer.info("Client connected...");
                 new ClientHandler(socket, this);
             }
         } catch (IOException e) {

@@ -5,8 +5,12 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 public class ClientHandler {
+
+    private static final Logger loggerClient = Logger.getLogger(ClientHandler.class.getName());
+
     private DataInputStream in;
     private DataOutputStream out;
     private Socket socket;
@@ -32,6 +36,7 @@ public class ClientHandler {
                 public void run() {
                     try{
                         sendMsg("Вы подключились к серверу");
+
 
                         for (String o: AuthService.loadHistoryDB()
                              ) {
@@ -131,6 +136,7 @@ public class ClientHandler {
             }
 
         } else {
+            loggerClient.warning("Incorrect login/password");
             sendMsg("Логин/пароль неверные");
         }
         return false;
@@ -150,6 +156,7 @@ public class ClientHandler {
 
     public void sendPrvtMsg(String nick, String str){
         if (server.findClient(nick)== null){
+            loggerClient.warning("User not found");
             sendMsg("Клиент с таким логином не найден");
             return;
         }
@@ -164,6 +171,7 @@ public class ClientHandler {
         if(server.findClient(nick) != null){
         server.sendPrivateMessage(ClientHandler.this, server.findClient(nick), str);
         } else {
+            loggerClient.warning("User not found");
             sendMsg("Клиент с таким логином не найден");
         }
     }

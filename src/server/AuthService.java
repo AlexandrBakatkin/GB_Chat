@@ -2,8 +2,11 @@ package server;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 public class AuthService {
+
+    private static final Logger loggerAuth = Logger.getLogger(AuthService.class.getName());
 
     private static Connection connection;
     private static Statement stmt;
